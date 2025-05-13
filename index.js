@@ -1,6 +1,8 @@
 const express = require('express');
 const sequelize = require('./database');
 const professionRoutes = require('./routes/ProfessionRoutes');
+const universityRoutes = require('./routes/UniversityRoutes');
+const personRoutes = require('./routes/PersonRoutes');
 const cors = require('cors');
 
 const app = express();
@@ -9,7 +11,9 @@ const port = 3306;
 app.use(cors());
 app.use(express.json());
 
-app.use('/profession', professionRoutes);
+app.use('/Profession', professionRoutes);
+app.use('/University', universityRoutes);
+app.use('/Person', personRoutes);
 
 sequelize.sync()
   .then(() => {
