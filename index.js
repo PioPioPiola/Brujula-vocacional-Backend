@@ -1,10 +1,12 @@
 const express = require('express');
 const sequelize = require('./database');
-const Profession = require('./models/Profession');
+const professionRoutes = require('./routes/ProfessionRoutes');
+const cors = require('cors');
 
 const app = express();
 const port = 3306;
 
+app.use(cors());
 app.use(express.json());
 
 app.use('/profession', professionRoutes);
