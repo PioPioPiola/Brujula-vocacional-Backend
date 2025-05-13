@@ -19,7 +19,7 @@ const createProfession = async (req, res) => {
 
 const getProfessions = async (req, res) => {
   try {
-    const { gen } = req.query;
+    const { gen, habilities, interests } = req.query;
 
     if (gen && gen !== "M" && gen !== "F") {
       return res.status(400).json({
@@ -27,11 +27,37 @@ const getProfessions = async (req, res) => {
       });
     }
 
-    const whereClause = gen ? { gen } : {};
+    const whereClause = {};
+
+    if (gen) {
+      whereClause.gen = gen;
+    }
+
+    if (habilities) {
+      const habilityTerms = habilities.split(',').map(term => term.trim());
+
+      whereClause.habilities = {
+        [Op.or]: habilityTerms.map(term => ({
+          [Op.like]: `%${term}%`
+        }))
+      };
+    }
+
+    if (interests) {
+      const interestTerms = interests.split(',').map(term => term.trim());
+
+      whereClause.interests = {
+        [Op.or]: interestTerms.map(term => ({
+          [Op.like]: `%${term}%`
+        }))
+      };
+    }
 
     const professions = await Profession.findAll({ where: whereClause });
     res.json(professions);
+
   } catch (error) {
+    console.error("Error al obtener profesiones:", error);
     res.status(500).json({ error: error.message });
   }
 };
