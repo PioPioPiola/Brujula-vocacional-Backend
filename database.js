@@ -14,6 +14,6 @@ const sequelize = new Sequelize('railway', 'root', 'wvuTTYKJlLaICxABByLTTQWlMKWU
 
 sequelize.authenticate()
   .then(() => console.log(' Conexión establecida correctamente.'))
-  .catch(err => console.error('❌ Error al conectar con la base de datos:', err));
+  .catch(err => console.error('Error al conectar con la base de datos:', err));
 
 module.exports = sequelize;
