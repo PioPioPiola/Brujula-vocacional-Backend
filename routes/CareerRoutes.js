@@ -5,6 +5,6 @@ const { createCareer, getCareers, getCareerById } = require('../controllers/Care
 
 router.post('/', createCareer);
 router.get('/', getCareers);
-router.get('/:idCarrera', getCareerById);
+router.get('/:id', getCareerById);
 
 module.exports = router;

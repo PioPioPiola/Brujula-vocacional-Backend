@@ -31,16 +31,22 @@ const getCareers = async (req, res) => {
   }
 };
 
-const getCareerById = async (id) => {
+const getCareerById = async (req, res) => {
   try {
-    const career = await Career.findByPk(id);
+    const { idCarrera } = req.params;
+
+    console.log("Recibido idCarrera:", idCarrera);
+
+    const career = await Career.findByPk(Number(idCarrera)); 
+
     if (!career) {
-      throw new Error(`No se encontró la carrera con el Id`);
+      return res.status(404).json({ error: 'No se encontró la carrera con el id enviado.' });
     }
-    return career;
+
+    res.json(career);
   } catch (error) {
-    console.error('Error buscando la carrera por ID', error);
-    throw error;
+    console.error("Error al buscar carrera:", error.message);
+    res.status(500).json({ error: error.message });
   }
 };
 
