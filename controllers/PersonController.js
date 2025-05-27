@@ -2,7 +2,7 @@ const Person = require('../models/Person');
 
 const updateInsertPerson = async (req, res) => {
   try {
-    const { id, name, location, gen, interests, habilities } = req.body;
+    const { id, name, location, gen, school, stratum, age, interests, habilities } = req.body;
 
     if (!name || !location) {
     return res.status(400).json({ error: 'Los campos name y location son obligatorios' });
@@ -13,6 +13,9 @@ const updateInsertPerson = async (req, res) => {
       name,
       location,
       gen,
+      school,
+      stratum,
+      age,
       interests,
       habilities
     });
