@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const Profession = require('../models/Profession');
 
 const createProfession = async (req, res) => {
@@ -33,24 +34,29 @@ const getProfessions = async (req, res) => {
       whereClause.gen = gen;
     }
 
+    const andConditions = [];
+
     if (habilities) {
       const habilityTerms = habilities.split(',').map(term => term.trim());
-
-      whereClause.habilities = {
+     andConditions.push({
         [Op.or]: habilityTerms.map(term => ({
-          [Op.like]: `%${term}%`
+          habilities: { [Op.like]: `%${term}%` }
         }))
-      };
+      });
     }
 
     if (interests) {
       const interestTerms = interests.split(',').map(term => term.trim());
 
-      whereClause.interests = {
+      andConditions.push({
         [Op.or]: interestTerms.map(term => ({
-          [Op.like]: `%${term}%`
+          interests: { [Op.like]: `%${term}%` }
         }))
-      };
+      });
+    }
+
+    if (andConditions.length > 0) {
+      whereClause[Op.and] = andConditions;
     }
 
     const professions = await Profession.findAll({ where: whereClause });
@@ -89,8 +95,24 @@ const updateProfession = async (req, res) => {
       habilities
     });
 
-    res.json({ message: "e modificó correctamente la profesión.", profession });
+    res.json({ message: "Se modificó correctamente la profesión.", profession });
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getProfessionByCode = async (req, res) => {
+  try {
+    const { code } = req.params;
+    const profession = await Profession.findOne({ where: { code } });
+
+    if (!profession) {
+      return res.status(404).json({ error: `No se encontró la profesión con código "${code}".` });
+    }
+
+    res.json(profession);
+  } catch (error) {
+    console.error("Error al obtener la profesión:", error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -99,5 +121,6 @@ const updateProfession = async (req, res) => {
 module.exports = {
   createProfession,
   getProfessions,
+  getProfessionByCode,
   updateProfession
 };

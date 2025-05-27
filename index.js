@@ -3,6 +3,7 @@ const sequelize = require('./database');
 const professionRoutes = require('./routes/ProfessionRoutes');
 const universityRoutes = require('./routes/UniversityRoutes');
 const personRoutes = require('./routes/PersonRoutes');
+const careerRoutes = require('./routes/CareerRoutes');
 const cors = require('cors');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/Profession', professionRoutes);
 app.use('/University', universityRoutes);
 app.use('/Person', personRoutes);
+app.use('/Career', careerRoutes);
 
 sequelize.sync()
   .then(() => {

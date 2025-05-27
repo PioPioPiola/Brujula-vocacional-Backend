@@ -20,6 +20,18 @@ const Person = sequelize.define('Person', {
     type: DataTypes.STRING(50),
     allowNull: true
   },
+  school: {
+    type: DataTypes.STRING(100),
+    allowNull: true
+  },
+  stratum: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
+  age: {
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
   interests: {
     type: DataTypes.TEXT,
     allowNull: true
